@@ -1,9 +1,15 @@
 import React from 'react';
 import './Graph.css';
 
-const Graph = ({ tasks, onSelectTask, selectedTaskId }) => {
+const Graph = ({ tasks, onSelectTask, selectedTaskId, onDeselectTask }) => {
+  const handleBackgroundClick = (e) => {
+    if (e.target === e.currentTarget) {
+      onDeselectTask();
+    }
+  };
+
   return (
-    <div className="graph">
+    <div className="graph" onClick={handleBackgroundClick}>
       {tasks.map(task => (
         <div
           key={task.id}
@@ -14,10 +20,16 @@ const Graph = ({ tasks, onSelectTask, selectedTaskId }) => {
             backgroundColor: task.color,
             position: 'absolute',
             left: `${task.urgency}%`,
-            top: `${task.importance}%`,
+            top: `${100 - task.importance}%`, // Invert the y-axis
             transform: 'translate(-50%, -50%)',
           }}
-          onClick={() => onSelectTask(task.id)}
+          onClick={() => {
+            if (task.id === selectedTaskId) {
+              onDeselectTask();
+            } else {
+              onSelectTask(task.id);
+            }
+          }}
         >
           {/* Task dot content */}
         </div>

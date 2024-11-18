@@ -44,6 +44,10 @@ function App() {
     setSelectedTaskId(id);
   };
 
+  const handleDeselectTask = () => {
+    setSelectedTaskId(null);
+  };
+
   const handleAddTask = () => {
     const newTask = {
       id: tasks.length + 1,
@@ -59,19 +63,38 @@ function App() {
     saveTasksToLocalStorage(updatedTasks);
   };
 
+  const handleDeleteTask = (id) => {
+    const updatedTasks = tasks.filter(task => task.id !== id);
+    setTasks(updatedTasks);
+    setSelectedTaskId(null);
+    saveTasksToLocalStorage(updatedTasks);
+  };
+
   const selectedTask = tasks.find(task => task.id === selectedTaskId);
 
   return (
     <div className="App">
       <div className="container">
-        <GraphContainer tasks={tasks} onSelectTask={handleTaskSelect} selectedTaskId={selectedTaskId} />
-        <TaskListContainer tasks={tasks} onSelectTask={handleTaskSelect} selectedTaskId={selectedTaskId} />
+        <GraphContainer 
+          tasks={tasks} 
+          onSelectTask={handleTaskSelect} 
+          selectedTaskId={selectedTaskId} 
+          onDeselectTask={handleDeselectTask}
+        />
+        <TaskListContainer 
+          tasks={tasks} 
+          onSelectTask={handleTaskSelect} 
+          selectedTaskId={selectedTaskId} 
+          onDeselectTask={handleDeselectTask}
+        />
       </div>
       <button className="add-button" onClick={handleAddTask}>Add Task</button>
       {selectedTask && (
         <EditorContainer 
           task={selectedTask} 
           onChange={(name, value) => handleTaskChange(selectedTaskId, name, value)} 
+          onDelete={handleDeleteTask}
+          onDeselect={handleDeselectTask}
         />
       )}
     </div>

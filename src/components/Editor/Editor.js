@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import './Editor.css';
 
-const Editor = ({ task, onChange }) => {
+const Editor = ({ task, onChange, onDelete, onDeselect }) => {
   const [values, setValues] = useState({
     title: '',
     color: '',
@@ -33,6 +33,7 @@ const Editor = ({ task, onChange }) => {
 
   return (
     <div className="editor">
+      <button className="close-button" onClick={onDeselect}>x</button>
       <div className="editor-field">
         <label>Title:</label>
         <input type="text" name="title" value={values.title} onChange={handleChange} />
@@ -53,6 +54,7 @@ const Editor = ({ task, onChange }) => {
         <label>Effort:</label>
         <input type="range" name="size" min="0" max="100" value={values.size} onChange={handleChange} />
       </div>
+      <button className="delete-button" onClick={() => onDelete(task.id)}>Delete Task</button>
     </div>
   );
 };
