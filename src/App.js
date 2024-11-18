@@ -32,9 +32,9 @@ function App() {
     localStorage.setItem('tasks', JSON.stringify(updatedTasks));
   };
 
-  const handleTaskChange = (id, name, value) => {
+  const handleTaskChange = (id, changes) => {
     const updatedTasks = tasks.map(task => 
-      task.id === id ? { ...task, [name]: value } : task
+      task.id === id ? { ...task, ...changes } : task
     );
     setTasks(updatedTasks);
     saveTasksToLocalStorage(updatedTasks);
@@ -80,6 +80,7 @@ function App() {
           onSelectTask={handleTaskSelect} 
           selectedTaskId={selectedTaskId} 
           onDeselectTask={handleDeselectTask}
+          onTaskChange={handleTaskChange}
         />
         <TaskListContainer 
           tasks={tasks} 
@@ -92,7 +93,7 @@ function App() {
       {selectedTask && (
         <EditorContainer 
           task={selectedTask} 
-          onChange={(name, value) => handleTaskChange(selectedTaskId, name, value)} 
+          onChange={(name, value) => handleTaskChange(selectedTaskId, { [name]: value })} 
           onDelete={handleDeleteTask}
           onDeselect={handleDeselectTask}
         />

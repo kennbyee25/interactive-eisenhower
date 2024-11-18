@@ -24,9 +24,7 @@ const TaskList = ({ tasks, onSelectTask, selectedTaskId, onDeselectTask }) => {
           key={task.id}
           className={`task-item ${task.id === selectedTaskId ? 'selected' : ''}`}
           onClick={() => {
-            if (task.id === selectedTaskId) {
-              onDeselectTask();
-            } else {
+            if (task.id !== selectedTaskId) {
               onSelectTask(task.id);
             }
           }}

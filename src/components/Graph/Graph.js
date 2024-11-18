@@ -1,7 +1,33 @@
-import React from 'react';
+import React, { useState, useRef } from 'react';
 import './Graph.css';
 
-const Graph = ({ tasks, onSelectTask, selectedTaskId, onDeselectTask }) => {
+const Graph = ({ tasks, onSelectTask, selectedTaskId, onDeselectTask, onTaskChange }) => {
+  const [dragging, setDragging] = useState(false);
+  const graphRef = useRef(null);
+
+  const handleMouseDown = (taskId) => (e) => {
+    if (taskId === selectedTaskId) {
+      setDragging(true);
+    }
+  };
+
+  const handleMouseMove = (e) => {
+    if (!dragging || selectedTaskId === null) return;
+
+    const graphRect = graphRef.current.getBoundingClientRect();
+    const newUrgency = Math.round(((e.clientX - graphRect.left) / graphRect.width) * 100);
+    const newImportance = Math.round(100 - ((e.clientY - graphRect.top) / graphRect.height) * 100);
+
+    onTaskChange(selectedTaskId, {
+      urgency: Math.min(Math.max(newUrgency, 0), 100),
+      importance: Math.min(Math.max(newImportance, 0), 100),
+    });
+  };
+
+  const handleMouseUp = () => {
+    setDragging(false);
+  };
+
   const handleBackgroundClick = (e) => {
     if (e.target === e.currentTarget) {
       onDeselectTask();
@@ -9,7 +35,13 @@ const Graph = ({ tasks, onSelectTask, selectedTaskId, onDeselectTask }) => {
   };
 
   return (
-    <div className="graph" onClick={handleBackgroundClick}>
+    <div
+      className="graph"
+      onClick={handleBackgroundClick}
+      onMouseMove={handleMouseMove}
+      onMouseUp={handleMouseUp}
+      ref={graphRef}
+    >
       {tasks.map(task => (
         <div
           key={task.id}
@@ -23,10 +55,9 @@ const Graph = ({ tasks, onSelectTask, selectedTaskId, onDeselectTask }) => {
             top: `${100 - task.importance}%`, // Invert the y-axis
             transform: 'translate(-50%, -50%)',
           }}
+          onMouseDown={handleMouseDown(task.id)}
           onClick={() => {
-            if (task.id === selectedTaskId) {
-              onDeselectTask();
-            } else {
+            if (task.id !== selectedTaskId) {
               onSelectTask(task.id);
             }
           }}

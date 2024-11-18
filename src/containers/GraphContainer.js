@@ -2,7 +2,7 @@ import React from 'react';
 import Graph from '../components/Graph/Graph';
 import './GraphContainer.css';
 
-const GraphContainer = ({ tasks, onSelectTask, selectedTaskId, onDeselectTask }) => {
+const GraphContainer = ({ tasks, onSelectTask, selectedTaskId, onDeselectTask, onTaskChange }) => {
   return (
     <div className="graph-container">
       <div className="graph-content">
@@ -11,6 +11,7 @@ const GraphContainer = ({ tasks, onSelectTask, selectedTaskId, onDeselectTask })
           onSelectTask={onSelectTask} 
           selectedTaskId={selectedTaskId} 
           onDeselectTask={onDeselectTask} 
+          onTaskChange={onTaskChange}
         />
       </div>
     </div>
