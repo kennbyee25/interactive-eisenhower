@@ -1,4 +1,14 @@
-.container {
+.App {
+    text-align: center;
+  }
+  
+  .title {
+    margin-top: 20px;
+    font-size: 2em;
+    font-weight: bold;
+  }
+  
+  .container {
     display: flex;
     align-items: flex-start; /* Align items to the top */
     padding: 20px;
