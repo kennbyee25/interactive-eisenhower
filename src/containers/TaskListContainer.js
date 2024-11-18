@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import TaskList from '../components/TaskList/TaskList';
 import './TaskListContainer.css';
 
@@ -8,6 +8,45 @@ const TaskListContainer = ({ tasks, onSelectTask, selectedTaskId, onDeselectTask
   const initialMouseY = useRef(null);
   const initialUrgency = useRef(null);
   const initialImportance = useRef(null);
+
+  useEffect(() => {
+    const handleMouseMove = (e) => {
+      if (!moveMode || selectedTaskId === null) return;
+
+      if (initialMouseY.current === null) {
+        initialMouseY.current = e.clientY;
+      }
+
+      const deltaY = initialMouseY.current - e.clientY; // Invert delta y
+      const increment = Math.round(deltaY / 10); // Adjust the divisor to control sensitivity
+
+      onTaskChange(selectedTaskId, {
+        urgency: Math.min(Math.max(initialUrgency.current + increment, 0), 100),
+        importance: Math.min(Math.max(initialImportance.current + increment, 0), 100),
+      });
+    };
+
+    const handleMouseUp = () => {
+      if (holdTimeout) {
+        clearTimeout(holdTimeout);
+        setHoldTimeout(null);
+      }
+      setMoveMode(false);
+    };
+
+    if (moveMode) {
+      document.addEventListener('mousemove', handleMouseMove);
+      document.addEventListener('mouseup', handleMouseUp);
+    } else {
+      document.removeEventListener('mousemove', handleMouseMove);
+      document.removeEventListener('mouseup', handleMouseUp);
+    }
+
+    return () => {
+      document.removeEventListener('mousemove', handleMouseMove);
+      document.removeEventListener('mouseup', handleMouseUp);
+    };
+  }, [moveMode, selectedTaskId, holdTimeout, onTaskChange]);
 
   const handleMouseDown = (taskId) => {
     if (taskId === selectedTaskId) {
@@ -22,32 +61,8 @@ const TaskListContainer = ({ tasks, onSelectTask, selectedTaskId, onDeselectTask
     }
   };
 
-  const handleMouseMove = (e) => {
-    if (!moveMode || selectedTaskId === null) return;
-
-    if (initialMouseY.current === null) {
-      initialMouseY.current = e.clientY;
-    }
-
-    const deltaY = initialMouseY.current - e.clientY; // Invert delta y
-    const increment = Math.round(deltaY / 10); // Adjust the divisor to control sensitivity
-
-    onTaskChange(selectedTaskId, {
-      urgency: Math.min(Math.max(initialUrgency.current + increment, 0), 100),
-      importance: Math.min(Math.max(initialImportance.current + increment, 0), 100),
-    });
-  };
-
-  const handleMouseUp = () => {
-    if (holdTimeout) {
-      clearTimeout(holdTimeout);
-      setHoldTimeout(null);
-    }
-    setMoveMode(false);
-  };
-
   return (
-    <div className="task-list-container" onMouseMove={handleMouseMove} onMouseUp={handleMouseUp}>
+    <div className="task-list-container">
       <div className="task-list-content">
         <TaskList 
           tasks={tasks} 
