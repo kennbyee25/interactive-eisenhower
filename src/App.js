@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import GraphContainer from './containers/GraphContainer';
 import TaskListContainer from './containers/TaskListContainer';
 import EditorContainer from './containers/EditorContainer';
@@ -9,10 +9,25 @@ function App() {
   const [tasks, setTasks] = useState(initialTasks);
   const [selectedTaskId, setSelectedTaskId] = useState(null);
 
+  // Load tasks from localStorage when the app initializes
+  useEffect(() => {
+    const savedTasks = JSON.parse(localStorage.getItem('tasks'));
+    if (savedTasks) {
+      setTasks(savedTasks);
+    }
+  }, []);
+
+  // Save tasks to localStorage whenever they are updated
+  const saveTasksToLocalStorage = (updatedTasks) => {
+    localStorage.setItem('tasks', JSON.stringify(updatedTasks));
+  };
+
   const handleTaskChange = (id, name, value) => {
-    setTasks(tasks.map(task => 
+    const updatedTasks = tasks.map(task => 
       task.id === id ? { ...task, [name]: value } : task
-    ));
+    );
+    setTasks(updatedTasks);
+    saveTasksToLocalStorage(updatedTasks);
   };
 
   const handleTaskSelect = (id) => {
@@ -28,8 +43,10 @@ function App() {
       importance: 50,
       size: 20,
     };
-    setTasks([...tasks, newTask]);
+    const updatedTasks = [...tasks, newTask];
+    setTasks(updatedTasks);
     setSelectedTaskId(newTask.id);
+    saveTasksToLocalStorage(updatedTasks);
   };
 
   const selectedTask = tasks.find(task => task.id === selectedTaskId);
