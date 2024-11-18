@@ -1,0 +1,19 @@
+.task-list-container {
+    width: 16%;
+    padding-bottom: 33%; /* This maintains the aspect ratio */
+    position: relative; /* This is needed for the inner content to be positioned correctly */
+    border: 2px solid #000;
+    background-color: #e0e0e0;
+    flex-shrink: 0; /* Prevent shrinking */
+  }
+  
+  .task-list-content {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }

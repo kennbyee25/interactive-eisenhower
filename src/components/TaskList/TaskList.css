@@ -1,0 +1,28 @@
+.task-list {
+    width: 100%;
+    height: 100%;
+    overflow-y: auto;
+  }
+  
+  .task-item {
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
+    cursor: pointer;
+  }
+  
+  .task-color {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    margin-right: 10px;
+  }
+  
+  .task-title {
+    flex-grow: 1;
+  }
+  
+  .task-size {
+    margin-left: auto;
+  }
