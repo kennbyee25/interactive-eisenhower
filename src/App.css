@@ -3,3 +3,16 @@
     align-items: flex-start; /* Align items to the top */
     padding: 20px;
   }
+  
+  .add-button {
+    padding: 10px 20px;
+    background-color: #28a745;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+    margin-top: 20px;
+  }
+  
+  .add-button:hover {
+    background-color: #218838;
+  }

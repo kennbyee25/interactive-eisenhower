@@ -19,6 +19,19 @@ function App() {
     setSelectedTaskId(id);
   };
 
+  const handleAddTask = () => {
+    const newTask = {
+      id: tasks.length + 1,
+      title: 'New Task',
+      color: '#0000ff',
+      urgency: 50,
+      importance: 50,
+      size: 20,
+    };
+    setTasks([...tasks, newTask]);
+    setSelectedTaskId(newTask.id);
+  };
+
   const selectedTask = tasks.find(task => task.id === selectedTaskId);
 
   return (
@@ -27,6 +40,7 @@ function App() {
         <GraphContainer tasks={tasks} onSelectTask={handleTaskSelect} selectedTaskId={selectedTaskId} />
         <TaskListContainer tasks={tasks} onSelectTask={handleTaskSelect} selectedTaskId={selectedTaskId} />
       </div>
+      <button className="add-button" onClick={handleAddTask}>Add Task</button>
       {selectedTask && (
         <EditorContainer 
           task={selectedTask} 
