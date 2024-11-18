@@ -104,7 +104,7 @@ function App() {
       {selectedTask && (
         <EditorContainer 
           task={selectedTask} 
-          onChange={(name, value) => handleTaskChange(selectedTaskId, { [name]: parseInt(value, 10) })} 
+          onChange={(name, value) => handleTaskChange(selectedTaskId, { [name]: value })} 
           onDelete={handleDeleteTask}
           onDeselect={handleDeselectTask}
         />
