@@ -1,6 +1,6 @@
 .graph-container {
-    width: 33%;
-    padding-bottom: 33%; /* This maintains the aspect ratio */
+    width: 50%;
+    padding-bottom: 50%; /* This maintains the aspect ratio */
     position: relative; /* This is needed for the inner content to be positioned correctly */
     border: 2px solid #000;
     background-color: #f0f0f0;

@@ -1,15 +1,12 @@
-import React, { useState } from 'react';
+import React from 'react';
 import TaskList from '../components/TaskList/TaskList';
-import { initialTasks } from '../tasks';
 import './TaskListContainer.css';
 
-const TaskListContainer = () => {
-  const [tasks, setTasks] = useState(initialTasks);
-
+const TaskListContainer = ({ tasks, onSelectTask, selectedTaskId }) => {
   return (
     <div className="task-list-container">
       <div className="task-list-content">
-        <TaskList tasks={tasks} />
+        <TaskList tasks={tasks} onSelectTask={onSelectTask} selectedTaskId={selectedTaskId} />
       </div>
     </div>
   );

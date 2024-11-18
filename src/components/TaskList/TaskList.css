@@ -10,6 +10,11 @@
     padding: 10px;
     border-bottom: 1px solid #ddd;
     cursor: pointer;
+    border: 1px solid transparent; /* Default border */
+  }
+  
+  .task-item.selected {
+    border: 2px solid #000; /* Highlight the selected task */
   }
   
   .task-color {

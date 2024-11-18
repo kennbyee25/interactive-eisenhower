@@ -7,7 +7,7 @@ import './App.css';
 
 function App() {
   const [tasks, setTasks] = useState(initialTasks);
-  const [selectedTaskId, setSelectedTaskId] = useState(tasks[0].id);
+  const [selectedTaskId, setSelectedTaskId] = useState(null);
 
   const handleTaskChange = (id, name, value) => {
     setTasks(tasks.map(task => 
@@ -19,6 +19,12 @@ function App() {
     setSelectedTaskId(id);
   };
 
+  const handleTaskSave = (updatedTask) => {
+    setTasks(tasks.map(task => 
+      task.id === selectedTaskId ? { ...task, ...updatedTask } : task
+    ));
+  };
+
   const selectedTask = tasks.find(task => task.id === selectedTaskId);
 
   return (
@@ -27,7 +33,13 @@ function App() {
         <GraphContainer tasks={tasks} onSelectTask={handleTaskSelect} selectedTaskId={selectedTaskId} />
         <TaskListContainer tasks={tasks} onSelectTask={handleTaskSelect} selectedTaskId={selectedTaskId} />
       </div>
-      <EditorContainer task={selectedTask} onChange={(name, value) => handleTaskChange(selectedTaskId, name, value)} />
+      {selectedTask && (
+        <EditorContainer 
+          task={selectedTask} 
+          onChange={(name, value) => handleTaskChange(selectedTaskId, name, value)} 
+          onSave={handleTaskSave} 
+        />
+      )}
     </div>
   );
 }
