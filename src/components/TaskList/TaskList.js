@@ -1,7 +1,7 @@
 import React from 'react';
 import './TaskList.css';
 
-const TaskList = ({ tasks, onSelectTask, selectedTaskId, onDeselectTask }) => {
+const TaskList = ({ tasks, onSelectTask, selectedTaskId, onDeselectTask, onMouseDown, moveMode }) => {
   const handleBackgroundClick = (e) => {
     if (e.target === e.currentTarget) {
       onDeselectTask();
@@ -19,21 +19,30 @@ const TaskList = ({ tasks, onSelectTask, selectedTaskId, onDeselectTask }) => {
 
   return (
     <div className="task-list" onClick={handleBackgroundClick}>
-      {sortedTasks.map(task => (
-        <div
-          key={task.id}
-          className={`task-item ${task.id === selectedTaskId ? 'selected' : ''}`}
-          onClick={() => {
-            if (task.id !== selectedTaskId) {
-              onSelectTask(task.id);
-            }
-          }}
-        >
-          <span className="task-color" style={{ backgroundColor: task.color }}></span>
-          <span className="task-title">{task.title}</span>
-          <span className="task-size">{task.size}</span>
-        </div>
-      ))}
+      {moveMode ? (
+        sortedTasks.map(task => (
+          <div key={task.id} className="task-item">
+            Task ID: {task.id}, Value: {task.urgency + task.importance}
+          </div>
+        ))
+      ) : (
+        sortedTasks.map(task => (
+          <div
+            key={task.id}
+            className={`task-item ${task.id === selectedTaskId ? 'selected' : ''}`}
+            onMouseDown={() => onMouseDown(task.id)}
+            onClick={() => {
+              if (task.id !== selectedTaskId) {
+                onSelectTask(task.id);
+              }
+            }}
+          >
+            <span className="task-color" style={{ backgroundColor: task.color }}></span>
+            <span className="task-title">{task.title}</span>
+            <span className="task-size">{task.size}</span>
+          </div>
+        ))
+      )}
     </div>
   );
 };

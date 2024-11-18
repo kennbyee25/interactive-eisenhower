@@ -97,13 +97,14 @@ function App() {
           onSelectTask={handleTaskSelect} 
           selectedTaskId={selectedTaskId} 
           onDeselectTask={handleDeselectTask}
+          onTaskChange={handleTaskChange}
         />
       </div>
       <button className="add-button" onClick={handleAddTask}>Add Task</button>
       {selectedTask && (
         <EditorContainer 
           task={selectedTask} 
-          onChange={(name, value) => handleTaskChange(selectedTaskId, { [name]: value })} 
+          onChange={(name, value) => handleTaskChange(selectedTaskId, { [name]: parseInt(value, 10) })} 
           onDelete={handleDeleteTask}
           onDeselect={handleDeselectTask}
         />
