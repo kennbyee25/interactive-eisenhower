@@ -1,0 +1,24 @@
+.editor {
+    padding: 20px;
+    border: 1px solid #ddd;
+    background-color: #fff;
+  }
+  
+  .editor-field {
+    margin-bottom: 10px;
+  }
+  
+  .editor-field label {
+    display: block;
+    margin-bottom: 5px;
+  }
+  
+  .editor-field input[type="text"] {
+    width: 100%;
+    padding: 5px;
+    box-sizing: border-box;
+  }
+  
+  .editor-field input[type="range"] {
+    width: 100%;
+  }

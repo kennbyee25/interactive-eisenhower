@@ -1,6 +1,7 @@
 import React from 'react';
-import GraphContainer from './containers/GraphContainer.js';
-import TaskListContainer from './containers/TaskListContainer.js';
+import GraphContainer from './containers/GraphContainer';
+import TaskListContainer from './containers/TaskListContainer';
+import EditorContainer from './containers/EditorContainer';
 import './App.css';
 
 function App() {
@@ -10,6 +11,7 @@ function App() {
         <GraphContainer />
         <TaskListContainer />
       </div>
+      <EditorContainer />
     </div>
   );
 }
