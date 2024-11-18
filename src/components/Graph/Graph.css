@@ -4,6 +4,53 @@
     position: relative;
   }
   
+  .grid {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    pointer-events: none; /* Allow clicks to pass through to the graph */
+  }
+  
+  .grid-line {
+    position: absolute;
+    background-color: #ddd;
+  }
+  
+  .grid-line.vertical {
+    width: 1px;
+    height: 100%;
+  }
+  
+  .grid-line.horizontal {
+    height: 1px;
+    width: 100%;
+  }
+  
+  .labels {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    pointer-events: none; /* Allow clicks to pass through to the graph */
+  }
+  
+  .x-label {
+    position: absolute;
+    bottom: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-weight: bold;
+    font-size: 16px;
+  }
+  
+  .y-label {
+    position: absolute;
+    top: 50%;
+    left: -30px;
+    transform: translateY(-50%) rotate(-90deg);
+    font-weight: bold;
+    font-size: 16px;
+  }
+  
   .task-dot {
     border-radius: 50%;
     cursor: pointer;

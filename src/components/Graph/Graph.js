@@ -42,6 +42,18 @@ const Graph = ({ tasks, onSelectTask, selectedTaskId, onDeselectTask, onTaskChan
       onMouseUp={handleMouseUp}
       ref={graphRef}
     >
+      <div className="grid">
+        {[...Array(11)].map((_, i) => (
+          <React.Fragment key={i}>
+            <div className="grid-line vertical" style={{ left: `${i * 10}%` }}></div>
+            <div className="grid-line horizontal" style={{ top: `${i * 10}%` }}></div>
+          </React.Fragment>
+        ))}
+      </div>
+      <div className="labels">
+        <div className="x-label">Urgency &rarr;</div>
+        <div className="y-label">Importance &rarr;</div>
+      </div>
       {tasks.map(task => (
         <div
           key={task.id}
