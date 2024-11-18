@@ -9,8 +9,8 @@ const Graph = ({ tasks, onSelectTask, selectedTaskId }) => {
           key={task.id}
           className={`task-dot ${task.id === selectedTaskId ? 'selected' : ''}`}
           style={{
-            width: task.size,
-            height: task.size,
+            width: `${task.size}px`,
+            height: `${task.size}px`,
             backgroundColor: task.color,
             position: 'absolute',
             left: `${task.urgency}%`,

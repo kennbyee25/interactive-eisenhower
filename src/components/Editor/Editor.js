@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import './Editor.css';
 
-const Editor = ({ task, onChange, onSave }) => {
+const Editor = ({ task, onChange }) => {
   const [values, setValues] = useState({
     title: '',
     color: '',
@@ -31,10 +31,6 @@ const Editor = ({ task, onChange, onSave }) => {
     onChange(name, value);
   };
 
-  const handleSave = () => {
-    onSave(values);
-  };
-
   return (
     <div className="editor">
       <div className="editor-field">
@@ -57,7 +53,6 @@ const Editor = ({ task, onChange, onSave }) => {
         <label>Effort:</label>
         <input type="range" name="size" min="0" max="100" value={values.size} onChange={handleChange} />
       </div>
-      <button className="save-button" onClick={handleSave}>Save</button>
     </div>
   );
 };

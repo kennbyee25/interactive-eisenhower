@@ -19,12 +19,6 @@ function App() {
     setSelectedTaskId(id);
   };
 
-  const handleTaskSave = (updatedTask) => {
-    setTasks(tasks.map(task => 
-      task.id === selectedTaskId ? { ...task, ...updatedTask } : task
-    ));
-  };
-
   const selectedTask = tasks.find(task => task.id === selectedTaskId);
 
   return (
@@ -37,7 +31,6 @@ function App() {
         <EditorContainer 
           task={selectedTask} 
           onChange={(name, value) => handleTaskChange(selectedTaskId, name, value)} 
-          onSave={handleTaskSave} 
         />
       )}
     </div>
