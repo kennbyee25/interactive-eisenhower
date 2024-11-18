@@ -5,6 +5,16 @@ import EditorContainer from './containers/EditorContainer';
 import { initialTasks } from './tasks';
 import './App.css';
 
+// Helper function to generate a random color
+const getRandomColor = () => {
+  const letters = '0123456789ABCDEF';
+  let color = '#';
+  for (let i = 0; i < 6; i++) {
+    color += letters[Math.floor(Math.random() * 16)];
+  }
+  return color;
+};
+
 function App() {
   const [tasks, setTasks] = useState(initialTasks);
   const [selectedTaskId, setSelectedTaskId] = useState(null);
@@ -38,10 +48,10 @@ function App() {
     const newTask = {
       id: tasks.length + 1,
       title: 'New Task',
-      color: '#0000ff',
+      color: getRandomColor(),
       urgency: 50,
       importance: 50,
-      size: 20,
+      size: 5, // Set the effort/size to 5
     };
     const updatedTasks = [...tasks, newTask];
     setTasks(updatedTasks);
