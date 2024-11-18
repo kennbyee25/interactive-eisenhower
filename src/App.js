@@ -15,6 +15,15 @@ const getRandomColor = () => {
   return color;
 };
 
+// Helper function to generate a unique random ID
+const generateUniqueId = (tasks) => {
+  let id;
+  do {
+    id = Math.floor(Math.random() * 1000000);
+  } while (tasks.some(task => task.id === id));
+  return id;
+};
+
 function App() {
   const [tasks, setTasks] = useState(initialTasks);
   const [selectedTaskId, setSelectedTaskId] = useState(null);
@@ -50,12 +59,12 @@ function App() {
 
   const handleAddTask = () => {
     const newTask = {
-      id: tasks.length + 1,
+      id: generateUniqueId(tasks),
       title: 'New Task',
       color: getRandomColor(),
       urgency: 50,
       importance: 50,
-      size: 5, // Set the effort/size to 5
+      size: 20, // Set the effort/size to 20
     };
     const updatedTasks = [...tasks, newTask];
     setTasks(updatedTasks);
@@ -74,7 +83,7 @@ function App() {
 
   return (
     <div className="App">
-      <h1 className="title">Interactive Eisenhower</h1>
+      <h1>Interactive Eisenhower</h1>
       <div className="container">
         <GraphContainer 
           tasks={tasks} 
