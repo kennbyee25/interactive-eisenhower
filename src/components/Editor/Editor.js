@@ -47,15 +47,15 @@ const Editor = ({ task, onChange, onDelete, onDeselect }) => {
         </div>
         <div className="editor-field">
           <label>Urgency:</label>
-          <input type="range" name="urgency" min="0" max="100" value={values.urgency} onChange={handleChange} />
+          <input type="range" name="urgency" min="0" max="100" step="0.1" value={values.urgency} onChange={handleChange} />
         </div>
         <div className="editor-field">
           <label>Importance:</label>
-          <input type="range" name="importance" min="0" max="100" value={values.importance} onChange={handleChange} />
+          <input type="range" name="importance" min="0" max="100" step="0.1" value={values.importance} onChange={handleChange} />
         </div>
         <div className="editor-field">
           <label>Effort:</label>
-          <input type="range" name="size" min="0" max="100" value={values.size} onChange={handleChange} />
+          <input type="range" name="size" min="0" max="100" step="0.1" value={values.size} onChange={handleChange} />
         </div>
         <button className="delete-button" onClick={() => onDelete(task.id)}>Delete Task</button>
       </div>

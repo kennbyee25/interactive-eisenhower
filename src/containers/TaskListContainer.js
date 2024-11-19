@@ -18,7 +18,7 @@ const TaskListContainer = ({ tasks, onSelectTask, selectedTaskId, onDeselectTask
       }
 
       const deltaY = initialMouseY.current - e.clientY; // Invert delta y
-      const increment = Math.round(deltaY / 10); // Adjust the divisor to control sensitivity
+      const increment = (deltaY / 10); // Adjust the divisor to control sensitivity
 
       onTaskChange(selectedTaskId, {
         urgency: Math.min(Math.max(initialUrgency.current + increment, 0), 100),

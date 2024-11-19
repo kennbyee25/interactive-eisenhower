@@ -15,8 +15,8 @@ const Graph = ({ tasks, onSelectTask, selectedTaskId, onDeselectTask, onTaskChan
     if (!dragging || selectedTaskId === null) return;
 
     const graphRect = graphRef.current.getBoundingClientRect();
-    const newUrgency = Math.round(((e.clientX - graphRect.left) / graphRect.width) * 100);
-    const newImportance = Math.round(100 - ((e.clientY - graphRect.top) / graphRect.height) * 100);
+    const newUrgency = (((e.clientX - graphRect.left) / graphRect.width) * 100);
+    const newImportance = (100 - ((e.clientY - graphRect.top) / graphRect.height) * 100);
 
     onTaskChange(selectedTaskId, {
       urgency: Math.min(Math.max(newUrgency, 0), 100),
