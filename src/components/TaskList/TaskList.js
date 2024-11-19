@@ -20,6 +20,9 @@ const TaskList = ({ tasks, onSelectTask, selectedTaskId, onDeselectTask, onMouse
   const selectedTask = tasks.find(task => task.id === selectedTaskId);
   const selectedValue = selectedTask ? selectedTask.urgency + selectedTask.importance : 0;
 
+  const topThreeTasks = sortedTasks.slice(0, 3);
+  const remainingTasks = sortedTasks.slice(3);
+
   return (
     <div className="task-list" onClick={handleBackgroundClick}>
       {moveMode ? (
@@ -52,22 +55,46 @@ const TaskList = ({ tasks, onSelectTask, selectedTaskId, onDeselectTask, onMouse
             })}
         </>
       ) : (
-        sortedTasks.slice(0, 10).map(task => (
-          <div
-            key={task.id}
-            className={`task-item ${task.id === selectedTaskId ? 'selected' : ''}`}
-            onMouseDown={() => onMouseDown(task.id)}
-            onClick={() => {
-              if (task.id !== selectedTaskId) {
-                onSelectTask(task.id);
-              }
-            }}
-          >
-            <span className="task-color" style={{ backgroundColor: task.color }}></span>
-            <span className="task-title">{task.title}</span>
-            <span className="task-size">{task.size}</span>
+        <>
+          <div className="task-section in-progress">
+            <h3>In Progress</h3>
+            {topThreeTasks.map(task => (
+              <div
+                key={task.id}
+                className={`task-item ${task.id === selectedTaskId ? 'selected' : ''}`}
+                onMouseDown={() => onMouseDown(task.id)}
+                onClick={() => {
+                  if (task.id !== selectedTaskId) {
+                    onSelectTask(task.id);
+                  }
+                }}
+              >
+                <span className="task-color" style={{ backgroundColor: task.color }}></span>
+                <span className="task-title">{task.title}</span>
+                <span className="task-size">{task.size}</span>
+              </div>
+            ))}
           </div>
-        ))
+          <div className="task-section to-do">
+            <h3>To Do</h3>
+            {remainingTasks.map(task => (
+              <div
+                key={task.id}
+                className={`task-item ${task.id === selectedTaskId ? 'selected' : ''}`}
+                onMouseDown={() => onMouseDown(task.id)}
+                onClick={() => {
+                  if (task.id !== selectedTaskId) {
+                    onSelectTask(task.id);
+                  }
+                }}
+              >
+                <span className="task-color" style={{ backgroundColor: task.color }}></span>
+                <span className="task-title">{task.title}</span>
+                <span className="task-size">{task.size}</span>
+              </div>
+            ))}
+          </div>
+        </>
       )}
     </div>
   );

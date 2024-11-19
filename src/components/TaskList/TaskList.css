@@ -5,6 +5,20 @@
     overflow: hidden;
   }
   
+  .task-section {
+    margin-bottom: 20px;
+  }
+  
+  .task-section.in-progress {
+    background-color: #f0f8ff; /* Lighter background for In Progress */
+    padding: 10px;
+  }
+  
+  .task-section.to-do {
+    background-color: #e6e6e6; /* Darker background for To Do */
+    padding: 10px;
+  }
+  
   .task-item {
     display: flex;
     align-items: center;
