@@ -15,18 +15,44 @@ const TaskList = ({ tasks, onSelectTask, selectedTaskId, onDeselectTask, onMouse
     const bUrgency = parseInt(b.urgency, 10);
     const bImportance = parseInt(b.importance, 10);
     return (bUrgency + bImportance) - (aUrgency + aImportance);
-  }).slice(0, 10);
+  });
+
+  const selectedTask = tasks.find(task => task.id === selectedTaskId);
+  const selectedValue = selectedTask ? selectedTask.urgency + selectedTask.importance : 0;
 
   return (
     <div className="task-list" onClick={handleBackgroundClick}>
       {moveMode ? (
-        sortedTasks.map(task => (
-          <div key={task.id} className="task-item">
-            Task ID: {task.id}, Value: {task.urgency + task.importance}
-          </div>
-        ))
+        <>
+          {[...Array(41)].map((_, i) => {
+            const value = selectedValue - 20 + i;
+            if (value < 0 || value > 200) return null;
+            const topPosition = 50 - ((value - selectedValue) * 2.5); // Scale by 2.5 to fit in the range of +-20
+            let tickClass = 'tick';
+            if (value % 10 === 0) tickClass += ' tick-ten';
+            else if (value % 5 === 0) tickClass += ' tick-five';
+            else tickClass += ' tick-one';
+            return <div key={i} className={tickClass} style={{ top: `${topPosition}%` }}></div>;
+          })}
+          {sortedTasks
+            .filter(task => Math.abs((task.urgency + task.importance) - selectedValue) <= 20)
+            .map(task => {
+              const valueDifference = (task.urgency + task.importance) - selectedValue;
+              const topPosition = 50 - (valueDifference * 2.5); // Scale by 2.5 to fit in the range of +-20
+
+              return (
+                <div
+                  key={task.id}
+                  className="task-item-meter"
+                  style={{ top: `${topPosition}%`, backgroundColor: task.color }}
+                >
+                  <div className="task-line"></div>
+                </div>
+              );
+            })}
+        </>
       ) : (
-        sortedTasks.map(task => (
+        sortedTasks.slice(0, 10).map(task => (
           <div
             key={task.id}
             className={`task-item ${task.id === selectedTaskId ? 'selected' : ''}`}

@@ -1,7 +1,8 @@
 .task-list {
     width: 100%;
     height: 100%;
-    overflow-y: auto;
+    position: relative;
+    overflow: hidden;
   }
   
   .task-item {
@@ -30,4 +31,27 @@
   
   .task-size {
     margin-left: auto;
+  }
+  
+  .task-item-meter {
+    position: absolute;
+    width: 100%;
+    height: 2px;
+    background-color: currentColor;
+  }
+  
+  .tick {
+    position: absolute;
+    width: 25%;
+    height: 1px;
+    background-color: gray;
+    left: 0;
+  }
+  
+  .tick-five {
+    width: 50%;
+  }
+  
+  .tick-ten {
+    width: 100%;
   }
