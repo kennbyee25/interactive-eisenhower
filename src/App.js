@@ -65,6 +65,7 @@ function App() {
       urgency: 50,
       importance: 50,
       size: 20, // Set the effort/size to 20
+      description: '',
     };
     const updatedTasks = [...tasks, newTask];
     setTasks(updatedTasks);

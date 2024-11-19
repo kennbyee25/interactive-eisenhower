@@ -1,8 +1,19 @@
 .editor {
+    display: flex;
+    height: 100%;
+  }
+  
+  .editor-sidebar {
+    width: 25%;
     padding: 20px;
-    border: 1px solid #ddd;
-    background-color: #fff;
+    border-right: 1px solid #ddd;
+    background-color: #f9f9f9;
     position: relative;
+  }
+  
+  .editor-description {
+    width: 75%;
+    padding: 20px;
   }
   
   .editor-field {
@@ -22,6 +33,14 @@
   
   .editor-field input[type="range"] {
     width: 100%;
+  }
+  
+  .editor-description textarea {
+    width: 100%;
+    height: calc(100% - 40px); /* Adjust height to fit within the container */
+    padding: 10px;
+    box-sizing: border-box;
+    resize: none;
   }
   
   .delete-button {

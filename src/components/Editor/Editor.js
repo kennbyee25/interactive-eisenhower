@@ -8,6 +8,7 @@ const Editor = ({ task, onChange, onDelete, onDeselect }) => {
     urgency: 0,
     importance: 0,
     size: 0,
+    description: '',
   });
 
   useEffect(() => {
@@ -18,6 +19,7 @@ const Editor = ({ task, onChange, onDelete, onDeselect }) => {
         urgency: task.urgency,
         importance: task.importance,
         size: task.size,
+        description: task.description,
       });
     }
   }, [task]);
@@ -33,28 +35,38 @@ const Editor = ({ task, onChange, onDelete, onDeselect }) => {
 
   return (
     <div className="editor">
-      <button className="close-button" onClick={onDeselect}>x</button>
-      <div className="editor-field">
-        <label>Title:</label>
-        <input type="text" name="title" value={values.title} onChange={handleChange} />
+      <div className="editor-sidebar">
+        <button className="close-button" onClick={onDeselect}>x</button>
+        <div className="editor-field">
+          <label>Title:</label>
+          <input type="text" name="title" value={values.title} onChange={handleChange} />
+        </div>
+        <div className="editor-field">
+          <label>Color:</label>
+          <input type="text" name="color" value={values.color} onChange={handleChange} />
+        </div>
+        <div className="editor-field">
+          <label>Urgency:</label>
+          <input type="range" name="urgency" min="0" max="100" value={values.urgency} onChange={handleChange} />
+        </div>
+        <div className="editor-field">
+          <label>Importance:</label>
+          <input type="range" name="importance" min="0" max="100" value={values.importance} onChange={handleChange} />
+        </div>
+        <div className="editor-field">
+          <label>Effort:</label>
+          <input type="range" name="size" min="0" max="100" value={values.size} onChange={handleChange} />
+        </div>
+        <button className="delete-button" onClick={() => onDelete(task.id)}>Delete Task</button>
       </div>
-      <div className="editor-field">
-        <label>Color:</label>
-        <input type="text" name="color" value={values.color} onChange={handleChange} />
+      <div className="editor-description">
+        <textarea
+          name="description"
+          value={values.description}
+          onChange={handleChange}
+          placeholder="Enter task description..."
+        />
       </div>
-      <div className="editor-field">
-        <label>Urgency:</label>
-        <input type="range" name="urgency" min="0" max="100" value={values.urgency} onChange={handleChange} />
-      </div>
-      <div className="editor-field">
-        <label>Importance:</label>
-        <input type="range" name="importance" min="0" max="100" value={values.importance} onChange={handleChange} />
-      </div>
-      <div className="editor-field">
-        <label>Effort:</label>
-        <input type="range" name="size" min="0" max="100" value={values.size} onChange={handleChange} />
-      </div>
-      <button className="delete-button" onClick={() => onDelete(task.id)}>Delete Task</button>
     </div>
   );
 };
