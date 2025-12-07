@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import GraphContainer from './containers/GraphContainer';
 import TaskListContainer from './containers/TaskListContainer';
 import EditorContainer from './containers/EditorContainer';
-import { initialTasks } from './tasks';
+import { loadTaskLists, saveTaskLists } from './models/taskListsStore';
 import './App.css';
 
 // Helper function to generate a random color
@@ -15,38 +15,28 @@ const getRandomColor = () => {
   return color;
 };
 
-// Helper function to generate a unique random ID
-const generateUniqueId = (tasks) => {
-  let id;
-  do {
-    id = Math.floor(Math.random() * 1000000);
-  } while (tasks.some(task => task.id === id));
-  return id;
-};
-
 function App() {
-  const [tasks, setTasks] = useState(initialTasks);
+  // Store an array of TaskList instances
+  const [taskLists, setTaskLists] = useState(() => loadTaskLists());
   const [selectedTaskId, setSelectedTaskId] = useState(null);
+
+  // The currently active TaskList (default to first one)
+  const selectedList = taskLists[0];
 
   // Load tasks from localStorage when the app initializes
   useEffect(() => {
-    const savedTasks = JSON.parse(localStorage.getItem('tasks'));
-    if (savedTasks) {
-      setTasks(savedTasks);
-    }
+    // Already loaded via useState initialization
   }, []);
 
-  // Save tasks to localStorage whenever they are updated
-  const saveTasksToLocalStorage = (updatedTasks) => {
-    localStorage.setItem('tasks', JSON.stringify(updatedTasks));
+  // Persist TaskLists to localStorage
+  const persistTaskLists = (lists) => {
+    setTaskLists(lists);
+    saveTaskLists(lists);
   };
 
   const handleTaskChange = (id, changes) => {
-    const updatedTasks = tasks.map(task => 
-      task.id === id ? { ...task, ...changes } : task
-    );
-    setTasks(updatedTasks);
-    saveTasksToLocalStorage(updatedTasks);
+    selectedList.updateTask(id, changes);
+    persistTaskLists([...taskLists]);
   };
 
   const handleTaskSelect = (id) => {
@@ -58,43 +48,39 @@ function App() {
   };
 
   const handleAddTask = () => {
-    const newTask = {
-      id: generateUniqueId(tasks),
+    const newTask = selectedList.addTask({
       title: 'New Task',
       color: getRandomColor(),
       urgency: 50,
       importance: 50,
-      size: 20, // Set the effort/size to 20
+      size: 20,
       description: '',
-    };
-    const updatedTasks = [...tasks, newTask];
-    setTasks(updatedTasks);
+    });
     setSelectedTaskId(newTask.id);
-    saveTasksToLocalStorage(updatedTasks);
+    persistTaskLists([...taskLists]);
   };
 
   const handleDeleteTask = (id) => {
-    const updatedTasks = tasks.filter(task => task.id !== id);
-    setTasks(updatedTasks);
+    selectedList.removeTask(id);
     setSelectedTaskId(null);
-    saveTasksToLocalStorage(updatedTasks);
+    persistTaskLists([...taskLists]);
   };
 
-  const selectedTask = tasks.find(task => task.id === selectedTaskId);
+  const selectedTask = selectedList.tasks.find(task => task.id === selectedTaskId);
 
   return (
     <div className="App">
       <h1>Interactive Eisenhower</h1>
       <div className="container">
         <GraphContainer 
-          tasks={tasks} 
+          tasks={selectedList.tasks} 
           onSelectTask={handleTaskSelect} 
           selectedTaskId={selectedTaskId} 
           onDeselectTask={handleDeselectTask}
           onTaskChange={handleTaskChange}
         />
         <TaskListContainer 
-          tasks={tasks} 
+          tasks={selectedList.tasks} 
           onSelectTask={handleTaskSelect} 
           selectedTaskId={selectedTaskId} 
           onDeselectTask={handleDeselectTask}
