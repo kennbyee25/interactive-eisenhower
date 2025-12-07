@@ -9,6 +9,13 @@ describe('TaskList', () => {
     expect(tl.tasks).toEqual([]);
   });
 
+  test('constructs with custom title', () => {
+    const tl = new TaskList({ title: 'Task List 1' });
+    expect(tl.title).toBe('Task List 1');
+    expect(tl.id).toBeDefined();
+    expect(tl.tasks).toEqual([]);
+  });
+
   test('constructs with title and tasks', () => {
     const tasks = [{ id: 1, title: 'T1' }, { id: 2, title: 'T2' }];
     const tl = new TaskList({ title: 'My List', tasks });

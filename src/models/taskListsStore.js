@@ -1,12 +1,17 @@
 import TaskList from './TaskList';
 import { initialTasks } from '../tasks';
 
+// Generate the next list title based on count of existing lists
+export const getNextListTitle = (taskLists = []) => {
+  return `Task List ${taskLists.length + 1}`;
+};
+
 // Load from localStorage and migrate legacy shape (array of Tasks) to array of TaskLists
 export const loadTaskLists = (key = 'tasks') => {
   const raw = JSON.parse(localStorage.getItem(key));
   if (!raw) {
-    // No saved, seed with initialTasks wrapped
-    return [new TaskList({ tasks: initialTasks })];
+    // No saved, seed with initialTasks wrapped with title "Task List 1"
+    return [new TaskList({ title: 'Task List 1', tasks: initialTasks })];
   }
 
   // If raw already has a version field, it's v2 format
@@ -16,11 +21,11 @@ export const loadTaskLists = (key = 'tasks') => {
 
   // Legacy: raw is an array of Task objects -> wrap into one TaskList
   if (Array.isArray(raw)) {
-    return [new TaskList({ tasks: raw })];
+    return [new TaskList({ title: 'Task List 1', tasks: raw })];
   }
 
   // Fallback
-  return [new TaskList({ tasks: initialTasks })];
+  return [new TaskList({ title: 'Task List 1', tasks: initialTasks })];
 };
 
 export const saveTaskLists = (taskLists, key = 'tasks') => {

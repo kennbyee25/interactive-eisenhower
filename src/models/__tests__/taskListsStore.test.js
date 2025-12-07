@@ -1,4 +1,4 @@
-import { loadTaskLists, saveTaskLists } from '../taskListsStore';
+import { loadTaskLists, saveTaskLists, getNextListTitle } from '../taskListsStore';
 import TaskList from '../TaskList';
 import Task from '../Task';
 
@@ -13,6 +13,34 @@ describe('taskListsStore', () => {
     expect(lists[0]).toBeInstanceOf(TaskList);
     // initialTasks is expected to have at least 2 items
     expect(lists[0].tasks.length).toBeGreaterThanOrEqual(2);
+  });
+
+  test('seeded TaskList has title "Task List 1"', () => {
+    const lists = loadTaskLists();
+    expect(lists[0].title).toBe('Task List 1');
+  });
+
+  test('getNextListTitle returns "Task List 1" for empty array', () => {
+    const title = getNextListTitle([]);
+    expect(title).toBe('Task List 1');
+  });
+
+  test('getNextListTitle increments based on count', () => {
+    const lists = [
+      new TaskList({ title: 'Task List 1' }),
+      new TaskList({ title: 'Task List 2' }),
+    ];
+    const title = getNextListTitle(lists);
+    expect(title).toBe('Task List 3');
+  });
+
+  test('getNextListTitle works with non-standard titles', () => {
+    const lists = [
+      new TaskList({ title: 'Work' }),
+      new TaskList({ title: 'Personal' }),
+    ];
+    const title = getNextListTitle(lists);
+    expect(title).toBe('Task List 3');
   });
 
   test('migrates legacy v1 format (array of tasks) to v2 (array of TaskLists)', () => {
