@@ -7,6 +7,7 @@ function TaskListToolbar({
   onSelectList,
   onAddList,
   onDeleteList,
+  onRenameList,
 }) {
   return (
     <div className="task-list-toolbar">
@@ -27,6 +28,20 @@ function TaskListToolbar({
         title="Add new task list"
       >
         +
+      </button>
+      <button
+        className="toolbar-button rename-list-button"
+        onClick={() => {
+          const current = taskLists.find(l => l.id === selectedListId);
+          const currentTitle = current ? current.title : '';
+          const newTitle = window.prompt('Rename task list', currentTitle);
+          if (newTitle && newTitle.trim() && newTitle.trim() !== currentTitle) {
+            onRenameList(selectedListId, newTitle.trim());
+          }
+        }}
+        title="Rename current task list"
+      >
+        ✏️
       </button>
       <button
         className="toolbar-button delete-list-button"

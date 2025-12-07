@@ -26,6 +26,13 @@ export default class TaskList {
     return true;
   }
 
+  // Rename the list title
+  rename(newTitle) {
+    if (!newTitle || typeof newTitle !== 'string') return false;
+    this.title = newTitle;
+    return true;
+  }
+
   toJSON() {
     return {
       id: this.id,

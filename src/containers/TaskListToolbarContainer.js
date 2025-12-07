@@ -7,6 +7,7 @@ function TaskListToolbarContainer({
   onSelectList,
   onAddList,
   onDeleteList,
+  onRenameList,
 }) {
   return (
     <TaskListToolbar
@@ -15,6 +16,7 @@ function TaskListToolbarContainer({
       onSelectList={onSelectList}
       onAddList={onAddList}
       onDeleteList={onDeleteList}
+      onRenameList={onRenameList}
     />
   );
 }

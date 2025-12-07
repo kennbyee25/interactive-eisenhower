@@ -108,6 +108,14 @@ function App() {
     setSelectedTaskId(null);
   };
 
+  const handleRenameList = (listId, newTitle) => {
+    const list = taskLists.find(l => l.id === listId);
+    if (!list) return;
+    if (!newTitle || typeof newTitle !== 'string') return;
+    list.rename(newTitle);
+    persistTaskLists([...taskLists]);
+  };
+
   const selectedTask = selectedList.tasks.find(task => task.id === selectedTaskId);
 
   return (
@@ -119,6 +127,7 @@ function App() {
         onSelectList={handleSelectList}
         onAddList={handleAddList}
         onDeleteList={handleDeleteList}
+        onRenameList={handleRenameList}
       />
       <div className="container">
         <GraphContainer 
