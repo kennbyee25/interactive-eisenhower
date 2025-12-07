@@ -128,6 +128,9 @@ function App() {
         onAddList={handleAddList}
         onDeleteList={handleDeleteList}
         onRenameList={handleRenameList}
+        onAddTask={handleAddTask}
+        onDeleteTask={(taskId) => handleDeleteTask(taskId)}
+        selectedTaskId={selectedTaskId}
       />
       <div className="container">
         <GraphContainer 

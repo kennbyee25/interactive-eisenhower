@@ -57,7 +57,7 @@ const Editor = ({ task, onChange, onDelete, onDeselect }) => {
           <label>Effort:</label>
           <input type="range" name="size" min="0" max="100" step="0.1" value={values.size} onChange={handleChange} />
         </div>
-        <button className="delete-button" onClick={() => onDelete(task.id)}>Delete Task</button>
+  {/* Delete task action moved to the toolbar */}
       </div>
       <div className="editor-description">
         <textarea
