@@ -148,7 +148,6 @@ function App() {
           onTaskChange={handleTaskChange}
         />
       </div>
-      <button className="add-button" onClick={handleAddTask}>Add Task</button>
       {selectedTask && (
         <EditorContainer 
           task={selectedTask} 
