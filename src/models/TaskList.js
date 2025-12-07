@@ -33,6 +33,47 @@ export default class TaskList {
     return true;
   }
 
+  // Archive a task (mark archived and set archivedAt)
+  archiveTask(taskId) {
+    const idx = this.tasks.findIndex(t => t.id === taskId);
+    if (idx === -1) return false;
+    const task = this.tasks[idx];
+    if (typeof task.setArchived === 'function') {
+      task.setArchived(true);
+    } else {
+      // fallback
+      task.archived = true;
+      task.archivedAt = Date.now();
+    }
+    // Move the archived task to the front so that most-recently-archived appears first
+    this.tasks = [this.tasks[idx], ...this.tasks.filter((_, i) => i !== idx)];
+    return true;
+  }
+
+  unarchiveTask(taskId) {
+    const idx = this.tasks.findIndex(t => t.id === taskId);
+    if (idx === -1) return false;
+    const task = this.tasks[idx];
+    if (typeof task.setArchived === 'function') {
+      task.setArchived(false);
+    } else {
+      task.archived = false;
+      task.archivedAt = null;
+    }
+    return true;
+  }
+
+  getArchivedTasks() {
+    return this.tasks
+      .filter(t => t.archived)
+      .slice()
+      .sort((a, b) => (b.archivedAt || 0) - (a.archivedAt || 0));
+  }
+
+  getActiveTasks() {
+    return this.tasks.filter(t => !t.archived);
+  }
+
   toJSON() {
     return {
       id: this.id,

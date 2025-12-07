@@ -31,6 +31,8 @@ describe('Task', () => {
       importance: 40,
       size: 25,
       description: 'A task',
+      archived: false,
+      archivedAt: null,
     });
   });
 });
