@@ -2,7 +2,9 @@ import React, { useState, useEffect } from 'react';
 import GraphContainer from './containers/GraphContainer';
 import TaskListContainer from './containers/TaskListContainer';
 import EditorContainer from './containers/EditorContainer';
-import { initialTasks } from './tasks';
+import TaskListToolbarContainer from './containers/TaskListToolbarContainer';
+import { loadTaskLists, saveTaskLists, getNextListTitle } from './models/taskListsStore';
+import TaskList from './models/TaskList';
 import './App.css';
 
 // Helper function to generate a random color
@@ -15,38 +17,32 @@ const getRandomColor = () => {
   return color;
 };
 
-// Helper function to generate a unique random ID
-const generateUniqueId = (tasks) => {
-  let id;
-  do {
-    id = Math.floor(Math.random() * 1000000);
-  } while (tasks.some(task => task.id === id));
-  return id;
-};
-
 function App() {
-  const [tasks, setTasks] = useState(initialTasks);
+  // Store an array of TaskList instances
+  const [taskLists, setTaskLists] = useState(() => loadTaskLists());
   const [selectedTaskId, setSelectedTaskId] = useState(null);
+  const [selectedListId, setSelectedListId] = useState(() => {
+    const lists = loadTaskLists();
+    return lists[0]?.id;
+  });
+
+  // The currently active TaskList
+  const selectedList = taskLists.find(l => l.id === selectedListId) || taskLists[0];
 
   // Load tasks from localStorage when the app initializes
   useEffect(() => {
-    const savedTasks = JSON.parse(localStorage.getItem('tasks'));
-    if (savedTasks) {
-      setTasks(savedTasks);
-    }
+    // Already loaded via useState initialization
   }, []);
 
-  // Save tasks to localStorage whenever they are updated
-  const saveTasksToLocalStorage = (updatedTasks) => {
-    localStorage.setItem('tasks', JSON.stringify(updatedTasks));
+  // Persist TaskLists to localStorage
+  const persistTaskLists = (lists) => {
+    setTaskLists(lists);
+    saveTaskLists(lists);
   };
 
   const handleTaskChange = (id, changes) => {
-    const updatedTasks = tasks.map(task => 
-      task.id === id ? { ...task, ...changes } : task
-    );
-    setTasks(updatedTasks);
-    saveTasksToLocalStorage(updatedTasks);
+    selectedList.updateTask(id, changes);
+    persistTaskLists([...taskLists]);
   };
 
   const handleTaskSelect = (id) => {
@@ -58,43 +54,91 @@ function App() {
   };
 
   const handleAddTask = () => {
-    const newTask = {
-      id: generateUniqueId(tasks),
+    const newTask = selectedList.addTask({
       title: 'New Task',
       color: getRandomColor(),
       urgency: 50,
       importance: 50,
-      size: 20, // Set the effort/size to 20
+      size: 20,
       description: '',
-    };
-    const updatedTasks = [...tasks, newTask];
-    setTasks(updatedTasks);
+    });
     setSelectedTaskId(newTask.id);
-    saveTasksToLocalStorage(updatedTasks);
+    persistTaskLists([...taskLists]);
   };
 
   const handleDeleteTask = (id) => {
-    const updatedTasks = tasks.filter(task => task.id !== id);
-    setTasks(updatedTasks);
+    selectedList.removeTask(id);
     setSelectedTaskId(null);
-    saveTasksToLocalStorage(updatedTasks);
+    persistTaskLists([...taskLists]);
   };
 
-  const selectedTask = tasks.find(task => task.id === selectedTaskId);
+  const handleSelectList = (listId) => {
+    setSelectedListId(listId);
+    setSelectedTaskId(null);
+  };
+
+  const handleAddList = () => {
+    const newListTitle = getNextListTitle(taskLists);
+    const newList = new TaskList({ title: newListTitle });
+    const updatedLists = [...taskLists, newList];
+    persistTaskLists(updatedLists);
+    setSelectedListId(newList.id);
+    setSelectedTaskId(null);
+  };
+
+  const handleDeleteList = (listId) => {
+    // Find the index of the list to delete
+    const indexToDelete = taskLists.findIndex(l => l.id === listId);
+    if (indexToDelete === -1) return;
+
+    let updatedLists = taskLists.filter(l => l.id !== listId);
+
+    // Safety: if no lists remain, create a new default one
+    if (updatedLists.length === 0) {
+      const newList = new TaskList({ title: 'Task List 1' });
+      updatedLists = [newList];
+      persistTaskLists(updatedLists);
+      setSelectedListId(newList.id);
+    } else {
+      // Select the next list (or previous if deleting the last one)
+      const nextIndex = Math.min(indexToDelete, updatedLists.length - 1);
+      persistTaskLists(updatedLists);
+      setSelectedListId(updatedLists[nextIndex].id);
+    }
+    setSelectedTaskId(null);
+  };
+
+  const handleRenameList = (listId, newTitle) => {
+    const list = taskLists.find(l => l.id === listId);
+    if (!list) return;
+    if (!newTitle || typeof newTitle !== 'string') return;
+    list.rename(newTitle);
+    persistTaskLists([...taskLists]);
+  };
+
+  const selectedTask = selectedList.tasks.find(task => task.id === selectedTaskId);
 
   return (
     <div className="App">
       <h1>Interactive Eisenhower</h1>
+      <TaskListToolbarContainer
+        taskLists={taskLists}
+        selectedListId={selectedListId}
+        onSelectList={handleSelectList}
+        onAddList={handleAddList}
+        onDeleteList={handleDeleteList}
+        onRenameList={handleRenameList}
+      />
       <div className="container">
         <GraphContainer 
-          tasks={tasks} 
+          tasks={selectedList.tasks} 
           onSelectTask={handleTaskSelect} 
           selectedTaskId={selectedTaskId} 
           onDeselectTask={handleDeselectTask}
           onTaskChange={handleTaskChange}
         />
         <TaskListContainer 
-          tasks={tasks} 
+          tasks={selectedList.tasks} 
           onSelectTask={handleTaskSelect} 
           selectedTaskId={selectedTaskId} 
           onDeselectTask={handleDeselectTask}
