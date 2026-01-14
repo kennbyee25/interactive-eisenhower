@@ -1,0 +1,73 @@
+.task-list-toolbar {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 20px;
+  background-color: #f5f5f5;
+  border-bottom: 1px solid #ddd;
+  margin-bottom: 20px;
+}
+
+.task-list-dropdown {
+  flex: 1;
+  max-width: 200px;
+  padding: 8px 12px;
+  font-size: 14px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  background-color: white;
+  cursor: pointer;
+}
+
+.task-list-dropdown:focus {
+  outline: none;
+  border-color: #4CAF50;
+  box-shadow: 0 0 5px rgba(76, 175, 80, 0.5);
+}
+
+.toolbar-button {
+  padding: 8px 12px;
+  font-size: 16px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  background-color: white;
+  cursor: pointer;
+  transition: background-color 0.2s, border-color 0.2s;
+}
+
+.toolbar-button:hover {
+  background-color: #f0f0f0;
+  border-color: #999;
+}
+
+.toolbar-button:active {
+  background-color: #e0e0e0;
+}
+
+.add-list-button {
+  font-weight: bold;
+  color: #4CAF50;
+}
+
+.add-list-button:hover {
+  color: #45a049;
+  border-color: #4CAF50;
+}
+
+.delete-list-button {
+  font-size: 18px;
+}
+
+.delete-list-button:hover {
+  background-color: #ffebee;
+  border-color: #f44336;
+}
+
+.rename-list-button {
+  font-size: 16px;
+}
+
+.rename-list-button:hover {
+  background-color: #fff8e1;
+  border-color: #ffb74d;
+}
